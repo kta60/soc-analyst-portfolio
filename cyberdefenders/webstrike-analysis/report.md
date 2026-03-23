@@ -107,5 +107,8 @@ Based on the analysis of network traffic and HTTP request patterns, the attack w
 ### Figure 2: HTTP GET Requests
 ![HTTP Traffic](evidence/http-get.png)
 
+### Figure 2: HTTP GET Requests
+![HTTP Traffic](evidence/http-get.png)
+
 ### Figure 3: IP Geolocation Result
 ![Geolocation](evidence/geolocation.png)
