@@ -65,7 +65,18 @@ The IP address **117.11.88.124** was analyzed using an external IP geolocation s
 The results showed that the traffic originated from:
 
 - **City:** Tianjin  
-- **Country:** China  
+- **Country:** China
+
+### 6. Identifying the User-Agent
+To further investigate the activity, HTTP request headers were analyzed in Wireshark.
+
+A POST request to `/reviews/upload.php` was examined, which indicated a file upload attempt. By expanding the Hypertext Transfer Protocol section, the User-Agent string used by the attacker was identified.
+
+The User-Agent was:
+
+`Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0`
+
+This suggests the attacker was using a Linux-based system with Firefox, which can help in detecting and filtering similar malicious activity. 
 
 ---
 
@@ -76,7 +87,8 @@ The results showed that the traffic originated from:
 - **Protocol:** HTTP  
 - **Observed Activity:** Multiple HTTP GET requests  
 - **Attack Behavior:** Web probing / directory enumeration  
-- **Geographical Origin:** Tianjin, China  
+- **Geographical Origin:** Tianjin, China
+ -**User-Agent:** Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
 
 ---
 
@@ -107,19 +119,6 @@ Based on the analysis of network traffic and HTTP request patterns, the attack w
 ### Figure 2: HTTP GET Requests
 ![HTTP Traffic](evidence/http-get.png)
 
-### Identifying the User-Agent
+### Figure 3: User-Agent Identification
+![User Agent](evidence/user-agent.png)
 
-To further investigate the activity, HTTP request headers were analyzed in Wireshark.
-
-A POST request to `/reviews/upload.php` was examined, which indicated a file upload attempt. By expanding the Hypertext Transfer Protocol section, the User-Agent string used by the attacker was identified.
-
-The User-Agent was:
-
-`Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0`
-
-This suggests the attacker was using a Linux-based system with Firefox, which can help in detecting and filtering similar malicious activity.
-### Figure 2: HTTP GET Requests
-![HTTP Traffic](evidence/http-get.png)
-
-### Figure 3: IP Geolocation Result
-![Geolocation](evidence/geolocation.png)
