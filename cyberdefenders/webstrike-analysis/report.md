@@ -40,7 +40,7 @@ From the packet statistics, both IPs showed active communication, with 117.11.88
 
 ### 3. Analyzing HTTP Traffic
 To focus on web activity, I applied the following filter:
-
+`http.request.method == "GET"`
 This revealed multiple HTTP GET requests originating from **117.11.88.124** to **24.49.63.79**.
 
 The requests included paths such as:
@@ -73,11 +73,23 @@ To further investigate the activity, HTTP request headers were analyzed in Wires
 A POST request to `/reviews/upload.php` was examined, which indicated a file upload attempt. By expanding the Hypertext Transfer Protocol section, the User-Agent string used by the attacker was identified.
 
 The User-Agent was:
-
 `Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0`
 
 This suggests the attacker was using a Linux-based system with Firefox, which can help in detecting and filtering similar malicious activity. 
 
+### 7. Identifying the Uploaded Web Shell
+
+HTTP POST requests to `/reviews/upload.php` were analyzed to determine how the suspicious file was introduced.
+
+Two upload attempts were identified. The first attempt used the filename `image.php`, but the server response returned "Invalid file format", indicating that the upload failed.
+
+A second upload attempt used the filename:
+
+`image.jpg.php`
+
+By following the HTTP stream, the server response returned "File uploaded successfully", confirming that this file was successfully uploaded.
+
+The file content revealed a PHP reverse shell payload, indicating that the attacker successfully deployed a malicious web shell on the server.
 ---
 
 ## Findings
@@ -88,8 +100,8 @@ This suggests the attacker was using a Linux-based system with Firefox, which ca
 - **Observed Activity:** Multiple HTTP GET requests  
 - **Attack Behavior:** Web probing / directory enumeration  
 - **Geographical Origin:** Tianjin, China
- -**User-Agent:** Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
-
+- **User-Agent:** Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
+- **Malicious File:** image.jpg.php
 ---
 
 ## Indicators of Compromise (IOCs)
@@ -122,3 +134,5 @@ Based on the analysis of network traffic and HTTP request patterns, the attack w
 ### Figure 3: User-Agent Identification
 ![User Agent](evidence/user-agent.png)
 
+### Figure 4: Malicious File Upload (HTTP Stream)
+![Web Shell](evidence/web-shell.png)
