@@ -31,7 +31,6 @@ The PCAP file was opened in Wireshark to review the overall traffic and identify
 ---
 
 ### 2. Identifying Communicating Hosts
-### 2. Identifying Communicating Hosts
 Using **Statistics → Conversations → IPv4**, I identified two main IP addresses involved in the communication:
 
 - **117.11.88.124**
@@ -94,6 +93,23 @@ By following the HTTP stream, the server response returned "File uploaded succes
 
 The file content revealed a PHP reverse shell payload, indicating that the attacker successfully deployed a malicious web shell on the server.
 ---
+
+### 8. Identifying the Upload Directory
+
+To determine where the uploaded file was stored, I searched for HTTP requests referencing the uploaded web shell.
+
+Filter used:
+http.request.uri contains "image.jpg.php"
+
+This revealed the following request:
+
+GET /reviews/uploads/image.jpg.php HTTP/1.1
+
+This indicates that the uploaded file was stored and executed from the following directory:
+
+/reviews/uploads/
+
+This confirms the location of the uploaded web shell on the server.
 
 ## Findings
 
