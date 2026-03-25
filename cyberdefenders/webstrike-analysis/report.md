@@ -1,16 +1,18 @@
-# Web Traffic Analysis – Identifying Attack Source (CyberDefenders)
+# Web Traffic Analysis – Malicious File Upload Investigation
 
 **Role:** SOC Analyst (Simulated Investigation)
 
 ---
 
 ## Objective
-The objective of this investigation was to analyze network traffic from a PCAP file and identify the source of suspicious activity, including determining the geographical origin of the attack.
+## Objective
+The objective of this investigation was to analyze a PCAP file, identify the source of suspicious web activity, determine how the attack was carried out, and document key indicators of compromise.
 
 ---
 
 ## Scenario Summary
-A packet capture file was provided for analysis. The goal was to examine the traffic, identify any suspicious communication, and determine where the attack originated from.
+## Scenario Summary
+A packet capture file was provided for analysis. The goal was to investigate suspicious HTTP activity, identify the attacker, determine the origin of the traffic, and examine whether a malicious file was uploaded to the target server.
 
 ---
 
@@ -21,20 +23,21 @@ A packet capture file was provided for analysis. The goal was to examine the tra
 
 ---
 
-## Investigation Process
+## Investigation steps
 
 ### 1. Initial Traffic Review
-The PCAP file was loaded into Wireshark to begin analysis of network activity.
+The PCAP file was opened in Wireshark to review the overall traffic and identify the main communicating hosts.
 
 ---
 
 ### 2. Identifying Communicating Hosts
-Using **Statistics → Conversations → IPv4**, I identified two primary IP addresses involved in the communication:
+### 2. Identifying Communicating Hosts
+Using **Statistics → Conversations → IPv4**, I identified two main IP addresses involved in the communication:
 
-- 117.11.88.124  
-- 24.49.63.79  
+- **117.11.88.124**
+- **24.49.63.79**
 
-From the packet statistics, both IPs showed active communication, with 117.11.88.124 sending slightly more packets.
+The conversation statistics showed repeated communication between these two hosts, with **117.11.88.124** sending slightly more packets. This suggested that **117.11.88.124** was likely the initiator of the activity.
 
 ---
 
