@@ -121,19 +121,19 @@ bash -c 'echo "username:a1l4m,password:youarecompromised" > /tmp/Creds.txt'
    ### Evidence 1 – Attacker Traffic Identification
 
    Wireshark traffic analysis showing malicious HTTP activity originating from the attacker IP address `23.158.56.196`.
-
+![Attacker Traffic Identification](evidence/02_HTTP_Filter_Results.png)
    ### Evidence 2 – Malicious JSP Command Execution
 
    Wireshark analysis showing HTTP POST requests to `/plugins/NSt8bHTg/NSt8bHTg.jsp`, where attacker-controlled commands were submitted through the `cmd` parameter.
-
+![Malicious JSP Command Execution](evidence/16_Q6_First_Webshell_Command_Time.png)
    ### Evidence 3 – Credential File Tampering
 
    Wireshark packet analysis revealed the attacker executing a command that overwrote `/tmp/Creds.txt` with the credentials `username:a1l4m,password:youarecompromised`.
-
+![Credential File Tampering](evidence/20_Q7_Credential_Modification_Evidence.png)
    ### Evidence 4 – Attempted Container Escape
 
    Wireshark revealed the attacker attempting to access the underlying host filesystem using the command `docker run --rm -it -v /:/host ubuntu chroot /host`.
-
+![Attempted Container Escape](evidence/Q9_Container_Escape_Attempt.png)
    ## Skills Demonstrated
 
    - Network traffic analysis with Wireshark
