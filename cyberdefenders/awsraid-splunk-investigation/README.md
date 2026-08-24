@@ -42,6 +42,10 @@ Nine consecutive authentication attempts failed before a successful login occurr
 
 This failure-to-success pattern, combined with the subsequent AWS activity performed through the account, indicated that the credentials for `helpdesk.luke` had been compromised.
 
+### Splunk Evidence
+
+![Splunk CloudTrail analysis showing repeated failed ConsoleLogin attempts followed by a successful login for helpdesk.luke](screenshots/01-initial-access-login-compromise.png)
+
 ## S3 Data Access Investigation
 
 After identifying `helpdesk.luke` as the compromised account, I investigated the account's Amazon S3 activity to determine what data was accessed after the compromise.
@@ -67,6 +71,9 @@ Of particular interest was `Product2_CAD_Designs.dwg` in the `product-designs-re
 
 The suspicious login succeeded at 09:54:04, and the first observed S3 object access occurred at 09:55:53, less than two minutes later. This timing strengthens the correlation between the account compromise and the subsequent S3 activity.
 
+<img width="1531" height="806" alt="image" src="https://github.com/user-attachments/assets/d0e0156b-99b5-44b2-bd7c-9d545189aebb" />
+
+
 ## S3 Public Access Configuration Change
 
 The investigation then identified a security configuration change affecting the S3 bucket `backup-and-restore98825501`.
@@ -86,6 +93,10 @@ The CloudTrail event showed public access block settings being set to `false`, w
 ### Analysis
 
 This activity is significant because changing an S3 bucket's public access controls can expose data that was previously protected. In the context of the compromised account and the preceding S3 object access, this represents a potentially dangerous cloud security configuration change.
+
+### Splunk Evidence
+
+![Splunk CloudTrail evidence showing the S3 public access block configuration change on the backup-and-restore bucket](screenshots/03-s3-public-access-change.png)
 
 ## IAM Persistence and Privilege Escalation
 
@@ -113,6 +124,14 @@ The creation of a new IAM user followed immediately by membership in the `Admins
 Even if access to the originally compromised `helpdesk.luke` account were later revoked, the attacker could potentially retain privileged access through the newly created `marketing.mark` account.
 
 The sequence also demonstrates why IAM administrative events such as `CreateUser` and `AddUserToGroup` should be closely monitored in AWS environments, particularly when they occur shortly after suspicious authentication activity.
+
+### Splunk Evidence – IAM Activity Timeline
+
+![Splunk CloudTrail timeline showing IAM reconnaissance followed by CreateUser, AddUserToGroup, AttachUserPolicy, and CreateLoginProfile activity](screenshots/04-iam-recon-to-persistence.png)
+
+### Splunk Evidence – Privileged Persistence
+
+![Splunk CloudTrail AddUserToGroup event showing marketing.mark added to the Admins group by the compromised helpdesk.luke account](screenshots/05-admin-group-persistence.png)
 
 ## Attack Timeline
 
